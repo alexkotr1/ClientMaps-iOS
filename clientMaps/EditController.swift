@@ -10,8 +10,8 @@ import UIKit
 class EditController : UIViewController, UITableViewDelegate, UITableViewDataSource {
     var Client : TaskEntry!
     var NewClient: TaskEntry!
+    
     @IBOutlet weak var ClientName: UITextField!
-   
     @IBOutlet weak var EditClientText: UILabel!
     @IBOutlet weak var Comments: UITextField!
     @IBOutlet weak var EditButton: UIButton!
@@ -20,16 +20,9 @@ class EditController : UIViewController, UITableViewDelegate, UITableViewDataSou
     @IBOutlet weak var UseCurrentLocationText: UILabel!
     @IBOutlet weak var AddClient: UITextField!
     @IBOutlet weak var NamesTable: UITableView!
+    
     @IBAction func Done(_ sender: Any) {
         (sender as AnyObject).resignFirstResponder()
-    }
-    struct ClientData: Encodable {
-        let name: String
-        let phone: String
-        let comments: String
-        var longitude: String
-        var latitude: String
-        var names: [String]
     }
    
     var latitude: String? = ""
@@ -39,7 +32,7 @@ class EditController : UIViewController, UITableViewDelegate, UITableViewDataSou
         if (ClientName.text == Client.name && Phone.text == Client.phone && Comments.text == Client.comments && !UseCurrentLocation.isOn && AddClient.text?.isEmpty == true){
             alert(Message: "Πρέπει να κάνετε κάποια αλλαγή!", self: self)
         }
-        var clientData = ClientData(name: ClientName.text!, phone: Phone.text!, comments: Comments.text!, longitude: String(Client.longitude), latitude: String(Client.latitude),names: Client.names)
+        var clientData = Helper.ClientData(name: ClientName.text!, phone: Phone.text!, comments: Comments.text!, longitude: String(Client.longitude), latitude: String(Client.latitude),names: Client.names, place: Client.place,id: Client.id)
             if (UseCurrentLocation.isOn){
                 clientData.longitude =  locationDataManager.locationManager.location?.coordinate.longitude.description ?? "Error"
                 clientData.latitude = locationDataManager.locationManager.location?.coordinate.latitude.description ?? "Error"
@@ -48,10 +41,19 @@ class EditController : UIViewController, UITableViewDelegate, UITableViewDataSou
         if let name = AddClient.text, !name.isEmpty{
             Client.names.append(name)
             clientData.names.append(name)
-            AddClient.text = ""
         }
-        updateData(data: clientData)
-      
+        Helper.shared.updateData(data: clientData, viewController: self) { success in
+            if success {
+                DispatchQueue.main.async{
+                    self.ClientName.text = ""
+                    self.Comments.text = ""
+                    self.Phone.text = ""
+                    self.AddClient.text = ""
+                    self.dismiss(animated: true,completion: nil)
+                }
+            }
+        }
+        
 
     }
     override func viewDidLoad(){
@@ -126,71 +128,34 @@ class EditController : UIViewController, UITableViewDelegate, UITableViewDataSou
             Comments.text = Client.comments
             NamesTable.delegate = self
             NamesTable.dataSource = self
-            NamesTable.register(ClientTableViewCell.nib(), forCellReuseIdentifier: ClientTableViewCell.identifier)
+            NamesTable.register(ClientNamesTableViewCell.nib(), forCellReuseIdentifier: ClientNamesTableViewCell.identifier)
         }
         
     }
-    func updateData(data: ClientData){
-        let encoder = JSONEncoder()
-        let JSONData = try! encoder.encode(data)
-        let jsonString = String(data: JSONData, encoding: .utf8)
-            
-            let url = URL(string: "http://159.223.16.89:3000/edit/\(Client.id)/6NaUPgrWuaZXVqYw2KQP" )
-            guard let requestUrl = url else { fatalError() }
-            var request = URLRequest(url: requestUrl)
-        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-            request.httpMethod = "POST"
-        request.httpBody = JSONData
-            let task = URLSession.shared.dataTask(with: request) { (data, response, error) in
-                if error != nil {
-                    DispatchQueue.main.async {
-                        alert(Message: "Κάτι πήγε στραβά!", self: self)
-                    }
-                    return
-                }
-                if let response = response as? HTTPURLResponse{
-                    if (response.statusCode == 404){
-                        DispatchQueue.main.async {
-                            alert(Message: "Αυτό το όνομα υπάρχει ήδη!", self: self)
-                        }
-                        
-                    }
-                    else if (response.statusCode != 200){
-                        DispatchQueue.main.async {
-                            alert(Message: "Κάτι πήγε στραβά", self: self)
-                        }
-                    }
-                    else {
-                        DispatchQueue.main.async {
-                            let storyBoard : UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
-                            let nextViewController = storyBoard.instantiateViewController(withIdentifier: "NavController") as? UINavigationController
-                            self.present(nextViewController!, animated:true, completion:nil)
-                        }
-                    }
-                }
-            }
-            task.resume()
-    }
+
      func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return Client.names.count
      }
      
     func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
         let deleteAction = UIContextualAction(style: .destructive, title: "Διαγραφή") { (_, _, completionHandler) in
-            var clientData = ClientData(name: self.ClientName.text!, phone: self.Phone.text!, comments: self.Comments.text!, longitude: String(self.Client.longitude), latitude: String(self.Client.latitude),names: self.Client.names)
+            var clientData = Helper.ClientData(name: self.ClientName.text!, phone: self.Phone.text!, comments: self.Comments.text!, longitude: String(self.Client.longitude), latitude: String(self.Client.latitude),names: self.Client.names, id: self.Client.id)
             clientData.names.remove(at: indexPath.row)
             print(clientData)
-            self.updateData(data: clientData)
+            Helper.shared.updateData(data: clientData, viewController: self) { _ in }
             completionHandler(true)
         }
         return UISwipeActionsConfiguration(actions: [deleteAction])
         
     }
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+                return 50
+        }
      func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: ClientTableViewCell.identifier, for: indexPath)
-        as! ClientTableViewCell
+        let cell = tableView.dequeueReusableCell(withIdentifier: ClientNamesTableViewCell.identifier, for: indexPath)
+        as! ClientNamesTableViewCell
          let name = Client.names[indexPath.row]
-        cell.ClientName.text = name
+        cell.clientName.text = name
          return cell
      }
      

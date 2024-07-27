@@ -7,6 +7,11 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		462CCC5D2C5522AD009855A1 /* ClientImageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 462CCC5C2C5522AD009855A1 /* ClientImageViewController.swift */; };
+		464552BC2C53BD1100DB1230 /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 464552BB2C53BD1100DB1230 /* SettingsViewController.swift */; };
+		464552BE2C53C70800DB1230 /* Helper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 464552BD2C53C70800DB1230 /* Helper.swift */; };
+		464552C42C55029800DB1230 /* ClientNamesTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 464552C32C55029800DB1230 /* ClientNamesTableViewCell.swift */; };
+		464552C62C5502B500DB1230 /* ClientNamesTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 464552C52C5502B500DB1230 /* ClientNamesTableViewCell.xib */; };
 		FA606C2329D2619200456A85 /* Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA606C2229D2619200456A85 /* Model.swift */; };
 		FA606C2629D2751700456A85 /* ClientTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA606C2429D2751700456A85 /* ClientTableViewCell.swift */; };
 		FA606C2729D2751700456A85 /* ClientTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = FA606C2529D2751700456A85 /* ClientTableViewCell.xib */; };
@@ -20,7 +25,7 @@
 		FAB8875129CFB8C200A30D2E /* testTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAB8875029CFB8C200A30D2E /* testTests.swift */; };
 		FAB8875B29CFB8C200A30D2E /* testUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAB8875A29CFB8C200A30D2E /* testUITests.swift */; };
 		FAB8875D29CFB8C200A30D2E /* testUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAB8875C29CFB8C200A30D2E /* testUITestsLaunchTests.swift */; };
-		FAB8876C29D08BAA00A30D2E /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAB8876B29D08BAA00A30D2E /* ViewController.swift */; };
+		FAB8876C29D08BAA00A30D2E /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAB8876B29D08BAA00A30D2E /* MainViewController.swift */; };
 		FAB8877429D0917D00A30D2E /* AddController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAB8877329D0917D00A30D2E /* AddController.swift */; };
 		FAB8877629D222CF00A30D2E /* LocationDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAB8877529D222CF00A30D2E /* LocationDataManager.swift */; };
 /* End PBXBuildFile section */
@@ -43,6 +48,11 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		462CCC5C2C5522AD009855A1 /* ClientImageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClientImageViewController.swift; sourceTree = "<group>"; };
+		464552BB2C53BD1100DB1230 /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
+		464552BD2C53C70800DB1230 /* Helper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Helper.swift; sourceTree = "<group>"; };
+		464552C32C55029800DB1230 /* ClientNamesTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClientNamesTableViewCell.swift; sourceTree = "<group>"; };
+		464552C52C5502B500DB1230 /* ClientNamesTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ClientNamesTableViewCell.xib; sourceTree = "<group>"; };
 		FA606C2229D2619200456A85 /* Model.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Model.swift; sourceTree = "<group>"; };
 		FA606C2429D2751700456A85 /* ClientTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClientTableViewCell.swift; sourceTree = "<group>"; };
 		FA606C2529D2751700456A85 /* ClientTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ClientTableViewCell.xib; sourceTree = "<group>"; };
@@ -60,7 +70,7 @@
 		FAB8875629CFB8C200A30D2E /* ClientMapsUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ClientMapsUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		FAB8875A29CFB8C200A30D2E /* testUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = testUITests.swift; sourceTree = "<group>"; };
 		FAB8875C29CFB8C200A30D2E /* testUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = testUITestsLaunchTests.swift; sourceTree = "<group>"; };
-		FAB8876B29D08BAA00A30D2E /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		FAB8876B29D08BAA00A30D2E /* MainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
 		FAB8877329D0917D00A30D2E /* AddController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddController.swift; sourceTree = "<group>"; };
 		FAB8877529D222CF00A30D2E /* LocationDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationDataManager.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -93,7 +103,7 @@
 		FAB8872A29CFB8C000A30D2E = {
 			isa = PBXGroup;
 			children = (
-				FAB8873529CFB8C000A30D2E /* test */,
+				FAB8873529CFB8C000A30D2E /* clientMaps */,
 				FAB8874F29CFB8C200A30D2E /* testTests */,
 				FAB8875929CFB8C200A30D2E /* testUITests */,
 				FAB8873429CFB8C000A30D2E /* Products */,
@@ -110,25 +120,30 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
-		FAB8873529CFB8C000A30D2E /* test */ = {
+		FAB8873529CFB8C000A30D2E /* clientMaps */ = {
 			isa = PBXGroup;
 			children = (
 				FAB8873629CFB8C000A30D2E /* AppDelegate.swift */,
 				FAB8873829CFB8C000A30D2E /* SceneDelegate.swift */,
 				FA606C2229D2619200456A85 /* Model.swift */,
-				FAB8876B29D08BAA00A30D2E /* ViewController.swift */,
 				FA606C2429D2751700456A85 /* ClientTableViewCell.swift */,
 				FA606C2529D2751700456A85 /* ClientTableViewCell.xib */,
+				464552C32C55029800DB1230 /* ClientNamesTableViewCell.swift */,
+				464552C52C5502B500DB1230 /* ClientNamesTableViewCell.xib */,
 				FAB8873C29CFB8C000A30D2E /* Main.storyboard */,
+				FAB8876B29D08BAA00A30D2E /* MainViewController.swift */,
 				FAB8877329D0917D00A30D2E /* AddController.swift */,
+				464552BB2C53BD1100DB1230 /* SettingsViewController.swift */,
 				FAB4FE5A29DAB29C00E67B90 /* EditController.swift */,
+				462CCC5C2C5522AD009855A1 /* ClientImageViewController.swift */,
+				464552BD2C53C70800DB1230 /* Helper.swift */,
 				FAB8874229CFB8C200A30D2E /* Assets.xcassets */,
 				FAB8874429CFB8C200A30D2E /* LaunchScreen.storyboard */,
 				FAB8874729CFB8C200A30D2E /* Info.plist */,
 				FAB8873F29CFB8C000A30D2E /* test.xcdatamodeld */,
 				FAB8877529D222CF00A30D2E /* LocationDataManager.swift */,
 			);
-			path = test;
+			path = clientMaps;
 			sourceTree = "<group>";
 		};
 		FAB8874F29CFB8C200A30D2E /* testTests */ = {
@@ -211,6 +226,9 @@
 			isa = PBXProject;
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
+				KnownAssetTags = (
+					New,
+				);
 				LastSwiftUpdateCheck = 1420;
 				LastUpgradeCheck = 1420;
 				TargetAttributes = {
@@ -252,6 +270,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				464552C62C5502B500DB1230 /* ClientNamesTableViewCell.xib in Resources */,
 				FAB8874629CFB8C200A30D2E /* LaunchScreen.storyboard in Resources */,
 				FAB8874329CFB8C200A30D2E /* Assets.xcassets in Resources */,
 				FA606C2729D2751700456A85 /* ClientTableViewCell.xib in Resources */,
@@ -280,11 +299,15 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				FAB8876C29D08BAA00A30D2E /* ViewController.swift in Sources */,
+				464552BE2C53C70800DB1230 /* Helper.swift in Sources */,
+				FAB8876C29D08BAA00A30D2E /* MainViewController.swift in Sources */,
 				FAB4FE5B29DAB29C00E67B90 /* EditController.swift in Sources */,
 				FAB8877429D0917D00A30D2E /* AddController.swift in Sources */,
+				464552BC2C53BD1100DB1230 /* SettingsViewController.swift in Sources */,
 				FAB8874129CFB8C000A30D2E /* test.xcdatamodeld in Sources */,
 				FAB8873729CFB8C000A30D2E /* AppDelegate.swift in Sources */,
+				462CCC5D2C5522AD009855A1 /* ClientImageViewController.swift in Sources */,
+				464552C42C55029800DB1230 /* ClientNamesTableViewCell.swift in Sources */,
 				FAB8877629D222CF00A30D2E /* LocationDataManager.swift in Sources */,
 				FAB8873929CFB8C000A30D2E /* SceneDelegate.swift in Sources */,
 				FA606C2629D2751700456A85 /* ClientTableViewCell.swift in Sources */,
@@ -467,7 +490,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = JXW3A7ZSDX;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = test/Info.plist;
+				INFOPLIST_FILE = clientMaps/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "Maps Πελατών";
 				INFOPLIST_KEY_NSLocationAlwaysAndWhenInUseUsageDescription = Yes;
 				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = Yes;
@@ -482,7 +505,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.kotrotsios.map;
+				PRODUCT_BUNDLE_IDENTIFIER = com.kotrotsios.clientmaps;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
@@ -502,7 +525,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = JXW3A7ZSDX;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = test/Info.plist;
+				INFOPLIST_FILE = clientMaps/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "Maps Πελατών";
 				INFOPLIST_KEY_NSLocationAlwaysAndWhenInUseUsageDescription = Yes;
 				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = Yes;
@@ -517,7 +540,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.kotrotsios.map;
+				PRODUCT_BUNDLE_IDENTIFIER = com.kotrotsios.clientmaps;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;

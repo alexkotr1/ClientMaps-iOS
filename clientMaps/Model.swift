@@ -6,5 +6,7 @@ struct TaskEntry: Codable  {
     let longitude: String
     let comments: String
     let id: String
+    let has_image: Bool
+    let place: String?
     var names:	 [String]
 }

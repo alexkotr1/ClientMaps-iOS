@@ -11,10 +11,27 @@ import CoreData
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
+    var window: UIWindow?
 
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-        // Override point for customization after application launch.
+//        window = UIWindow(frame: UIScreen.main.bounds)
+//
+//        // Create instances of your view controllers
+//        let mainViewController = MainViewController()
+//        let addController = AddController()
+//        let settingsViewController = SettingsViewController()
+//
+//        // Create a tab bar controller and set the view controllers
+//        let tabBarController = UITabBarController()
+//        tabBarController.viewControllers = [mainViewController, addController, settingsViewController]
+//
+//        tabBarController.selectedIndex = 0 // Default is the first tab
+//        
+//        window?.rootViewController = tabBarController
+//        window?.makeKeyAndVisible()
+
+
         return true
     }
 

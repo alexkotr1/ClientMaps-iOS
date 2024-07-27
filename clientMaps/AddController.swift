@@ -16,6 +16,9 @@ class AddController: UIViewController {
     var latitude: String? = ""
     var longitude: String? = ""
     override func viewDidLoad() {
+        UserDefaults.standard.set(false, forKey: "_UIConstraintBasedLayoutLogUnsatisfiable")
+
+
         navigationController?.setNavigationBarHidden(false, animated: false)
           let textTopConstraint = NSLayoutConstraint(item: AddClientText!, attribute: .bottom, relatedBy: .equal, toItem: view, attribute: .centerY, multiplier: 0.75, constant: 0)
           let textHorizontalConstraint = NSLayoutConstraint(item: AddClientText!, attribute: .centerX, relatedBy: .equal, toItem: view, attribute: .centerX, multiplier: 1, constant: 0)
@@ -59,9 +62,11 @@ class AddController: UIViewController {
                                          "phone" : Phone.text!,
                                          "latitude" : latitude!,
                                          "longitude" : longitude!,
-                                         "comments": Comments.text!];
+                                         "comments": Comments.text!,
+                                         "names": []
+        ];
         let JSONData = try! JSONSerialization.data(withJSONObject: dictionary, options: []);
-        let url = URL(string: "http://159.223.16.89:3000/add/6NaUPgrWuaZXVqYw2KQP")
+        let url = URL(string: Helper.shared.ADD_ENDPOINT + Helper.shared.PASSWORD!)
         guard let requestUrl = url else { fatalError() }
         var request = URLRequest(url: requestUrl)
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
@@ -75,14 +80,10 @@ class AddController: UIViewController {
             if let httpResponse = response as? HTTPURLResponse {
                    print("statusCode: \(httpResponse.statusCode)")
                 if (httpResponse.statusCode == 200){
-                    print("A")
                     DispatchQueue.main.async {
                         self.Name.text = ""
                         self.Phone.text = ""
                         self.Comments.text = ""
-                        let storyBoard : UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
-                        let nextViewController = storyBoard.instantiateViewController(withIdentifier: "NavController")
-                        self.present(nextViewController, animated:true, completion:nil)
                     }
                 }
                 else if (httpResponse.statusCode == 300){
@@ -98,10 +99,7 @@ class AddController: UIViewController {
                 }
             }
         }
-        task.resume()
-
-        
-        
+        task.resume()        
     }
 }
 
