@@ -134,38 +134,63 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="812"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <searchBar contentMode="redraw" translatesAutoresizingMaskIntoConstraints="NO" id="aPW-7J-Baq">
-                                <rect key="frame" x="0.0" y="50" width="375" height="56"/>
+                            <searchBar contentMode="redraw" text="" translatesAutoresizingMaskIntoConstraints="NO" id="aPW-7J-Baq">
+                                <rect key="frame" x="0.0" y="50" width="375" height="50"/>
                                 <textInputTraits key="textInputTraits"/>
                                 <connections>
                                     <outlet property="delegate" destination="BYZ-38-t0r" id="kqA-L3-M1s"/>
                                 </connections>
                             </searchBar>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="R82-wh-hZE">
-                                <rect key="frame" x="0.0" y="106" width="375" height="623"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" ambiguous="YES" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="R82-wh-hZE">
+                                <rect key="frame" x="0.0" y="147" width="375" height="582"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                             </tableView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="S87-gB-hur">
+                                <rect key="frame" x="0.0" y="106" width="297" height="32"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" image="wifi" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="e2p-Yz-6o1">
+                                <rect key="frame" x="305" y="107" width="70" height="30"/>
+                                <color key="tintColor" systemColor="systemBlueColor"/>
+                            </imageView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <color key="tintColor" systemColor="systemBackgroundColor"/>
                         <constraints>
-                            <constraint firstItem="aPW-7J-Baq" firstAttribute="trailing" secondItem="6Tk-OE-BBY" secondAttribute="trailing" id="2gI-OO-Fku"/>
-                            <constraint firstItem="aPW-7J-Baq" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" id="DLM-MF-kXO"/>
-                            <constraint firstItem="aPW-7J-Baq" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="meW-dY-cPi"/>
+                            <constraint firstItem="e2p-Yz-6o1" firstAttribute="top" secondItem="aPW-7J-Baq" secondAttribute="bottom" constant="5" id="2Nz-1b-C3i"/>
+                            <constraint firstItem="e2p-Yz-6o1" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="55" id="5Y7-Hi-qx6"/>
+                            <constraint firstItem="R82-wh-hZE" firstAttribute="trailing" secondItem="6Tk-OE-BBY" secondAttribute="trailing" id="6sr-cs-fct"/>
+                            <constraint firstItem="aPW-7J-Baq" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" id="C5Q-iI-3Fu"/>
+                            <constraint firstItem="R82-wh-hZE" firstAttribute="top" secondItem="S87-gB-hur" secondAttribute="bottom" constant="9" id="CPb-Ad-OgT"/>
+                            <constraint firstItem="aPW-7J-Baq" firstAttribute="trailing" secondItem="6Tk-OE-BBY" secondAttribute="trailing" id="ELh-Ns-uO1"/>
+                            <constraint firstItem="S87-gB-hur" firstAttribute="top" secondItem="aPW-7J-Baq" secondAttribute="bottom" id="Gde-bn-Mbs"/>
+                            <constraint firstItem="R82-wh-hZE" firstAttribute="bottom" secondItem="6Tk-OE-BBY" secondAttribute="bottom" id="Sia-Aw-DOc"/>
+                            <constraint firstItem="S87-gB-hur" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="ZCH-si-6hR"/>
+                            <constraint firstItem="e2p-Yz-6o1" firstAttribute="leading" secondItem="S87-gB-hur" secondAttribute="trailing" constant="8" id="bEc-ZM-kIS"/>
+                            <constraint firstItem="aPW-7J-Baq" firstAttribute="trailing" secondItem="6Tk-OE-BBY" secondAttribute="trailing" id="dNA-Ga-nr8"/>
+                            <constraint firstItem="R82-wh-hZE" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="dWO-VN-2LQ"/>
+                            <constraint firstItem="aPW-7J-Baq" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="oDB-Z0-TE6"/>
+                            <constraint firstItem="aPW-7J-Baq" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="oDM-yj-zYo"/>
+                            <constraint firstItem="e2p-Yz-6o1" firstAttribute="trailing" secondItem="6Tk-OE-BBY" secondAttribute="trailing" id="sQ1-pJ-9yN"/>
+                            <constraint firstItem="aPW-7J-Baq" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" id="xQi-YL-AKl"/>
                         </constraints>
                     </view>
                     <tabBarItem key="tabBarItem" title="Πελάτες" image="list.bullet" catalog="system" id="IT9-1m-TpC"/>
                     <navigationItem key="navigationItem" id="7bP-op-eou"/>
                     <connections>
                         <outlet property="SearchBar" destination="aPW-7J-Baq" id="Zvs-cB-1VD"/>
+                        <outlet property="clientCount" destination="S87-gB-hur" id="G1j-mV-lDZ"/>
+                        <outlet property="connectionIndicator" destination="e2p-Yz-6o1" id="bcd-45-1uO"/>
                         <outlet property="table" destination="R82-wh-hZE" id="Ujf-l7-KhS"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="929" y="26"/>
+            <point key="canvasLocation" x="928.79999999999995" y="25.862068965517242"/>
         </scene>
         <!--EditController-->
         <scene sceneID="7g6-TS-wVq">
@@ -375,6 +400,7 @@
         <image name="gear" catalog="system" width="128" height="122"/>
         <image name="list.bullet" catalog="system" width="128" height="87"/>
         <image name="plus" catalog="system" width="128" height="113"/>
+        <image name="wifi" catalog="system" width="128" height="90"/>
         <namedColor name="AccentColor">
             <color red="0.0" green="0.46000000000000002" blue="0.89000000000000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>

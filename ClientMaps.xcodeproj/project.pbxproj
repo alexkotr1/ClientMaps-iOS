@@ -8,11 +8,15 @@
 
 /* Begin PBXBuildFile section */
 		462CCC5D2C5522AD009855A1 /* ClientImageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 462CCC5C2C5522AD009855A1 /* ClientImageViewController.swift */; };
+		462CCC5F2C559FB2009855A1 /* Requests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 462CCC5E2C559FB2009855A1 /* Requests.swift */; };
+		462CCC612C55A004009855A1 /* CredentialsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 462CCC602C55A004009855A1 /* CredentialsManager.swift */; };
+		462CCC632C55A0BA009855A1 /* Client.swift in Sources */ = {isa = PBXBuildFile; fileRef = 462CCC622C55A0BA009855A1 /* Client.swift */; };
+		462CCC652C563648009855A1 /* Cache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 462CCC642C563648009855A1 /* Cache.swift */; };
+		462CCC672C56C2E9009855A1 /* NetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 462CCC662C56C2E9009855A1 /* NetworkManager.swift */; };
 		464552BC2C53BD1100DB1230 /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 464552BB2C53BD1100DB1230 /* SettingsViewController.swift */; };
 		464552BE2C53C70800DB1230 /* Helper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 464552BD2C53C70800DB1230 /* Helper.swift */; };
 		464552C42C55029800DB1230 /* ClientNamesTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 464552C32C55029800DB1230 /* ClientNamesTableViewCell.swift */; };
 		464552C62C5502B500DB1230 /* ClientNamesTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 464552C52C5502B500DB1230 /* ClientNamesTableViewCell.xib */; };
-		FA606C2329D2619200456A85 /* Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA606C2229D2619200456A85 /* Model.swift */; };
 		FA606C2629D2751700456A85 /* ClientTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA606C2429D2751700456A85 /* ClientTableViewCell.swift */; };
 		FA606C2729D2751700456A85 /* ClientTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = FA606C2529D2751700456A85 /* ClientTableViewCell.xib */; };
 		FAB4FE5B29DAB29C00E67B90 /* EditController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAB4FE5A29DAB29C00E67B90 /* EditController.swift */; };
@@ -49,11 +53,15 @@
 
 /* Begin PBXFileReference section */
 		462CCC5C2C5522AD009855A1 /* ClientImageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClientImageViewController.swift; sourceTree = "<group>"; };
+		462CCC5E2C559FB2009855A1 /* Requests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Requests.swift; sourceTree = "<group>"; };
+		462CCC602C55A004009855A1 /* CredentialsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CredentialsManager.swift; sourceTree = "<group>"; };
+		462CCC622C55A0BA009855A1 /* Client.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Client.swift; sourceTree = "<group>"; };
+		462CCC642C563648009855A1 /* Cache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Cache.swift; sourceTree = "<group>"; };
+		462CCC662C56C2E9009855A1 /* NetworkManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkManager.swift; sourceTree = "<group>"; };
 		464552BB2C53BD1100DB1230 /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
 		464552BD2C53C70800DB1230 /* Helper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Helper.swift; sourceTree = "<group>"; };
 		464552C32C55029800DB1230 /* ClientNamesTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClientNamesTableViewCell.swift; sourceTree = "<group>"; };
 		464552C52C5502B500DB1230 /* ClientNamesTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ClientNamesTableViewCell.xib; sourceTree = "<group>"; };
-		FA606C2229D2619200456A85 /* Model.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Model.swift; sourceTree = "<group>"; };
 		FA606C2429D2751700456A85 /* ClientTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClientTableViewCell.swift; sourceTree = "<group>"; };
 		FA606C2529D2751700456A85 /* ClientTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ClientTableViewCell.xib; sourceTree = "<group>"; };
 		FAB4FE5A29DAB29C00E67B90 /* EditController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditController.swift; sourceTree = "<group>"; };
@@ -123,9 +131,9 @@
 		FAB8873529CFB8C000A30D2E /* clientMaps */ = {
 			isa = PBXGroup;
 			children = (
+				462CCC622C55A0BA009855A1 /* Client.swift */,
 				FAB8873629CFB8C000A30D2E /* AppDelegate.swift */,
 				FAB8873829CFB8C000A30D2E /* SceneDelegate.swift */,
-				FA606C2229D2619200456A85 /* Model.swift */,
 				FA606C2429D2751700456A85 /* ClientTableViewCell.swift */,
 				FA606C2529D2751700456A85 /* ClientTableViewCell.xib */,
 				464552C32C55029800DB1230 /* ClientNamesTableViewCell.swift */,
@@ -137,11 +145,15 @@
 				FAB4FE5A29DAB29C00E67B90 /* EditController.swift */,
 				462CCC5C2C5522AD009855A1 /* ClientImageViewController.swift */,
 				464552BD2C53C70800DB1230 /* Helper.swift */,
+				462CCC602C55A004009855A1 /* CredentialsManager.swift */,
+				462CCC5E2C559FB2009855A1 /* Requests.swift */,
+				462CCC642C563648009855A1 /* Cache.swift */,
+				FAB8877529D222CF00A30D2E /* LocationDataManager.swift */,
+				462CCC662C56C2E9009855A1 /* NetworkManager.swift */,
 				FAB8874229CFB8C200A30D2E /* Assets.xcassets */,
 				FAB8874429CFB8C200A30D2E /* LaunchScreen.storyboard */,
 				FAB8874729CFB8C200A30D2E /* Info.plist */,
 				FAB8873F29CFB8C000A30D2E /* test.xcdatamodeld */,
-				FAB8877529D222CF00A30D2E /* LocationDataManager.swift */,
 			);
 			path = clientMaps;
 			sourceTree = "<group>";
@@ -304,14 +316,18 @@
 				FAB4FE5B29DAB29C00E67B90 /* EditController.swift in Sources */,
 				FAB8877429D0917D00A30D2E /* AddController.swift in Sources */,
 				464552BC2C53BD1100DB1230 /* SettingsViewController.swift in Sources */,
+				462CCC612C55A004009855A1 /* CredentialsManager.swift in Sources */,
+				462CCC632C55A0BA009855A1 /* Client.swift in Sources */,
+				462CCC5F2C559FB2009855A1 /* Requests.swift in Sources */,
 				FAB8874129CFB8C000A30D2E /* test.xcdatamodeld in Sources */,
 				FAB8873729CFB8C000A30D2E /* AppDelegate.swift in Sources */,
+				462CCC672C56C2E9009855A1 /* NetworkManager.swift in Sources */,
+				462CCC652C563648009855A1 /* Cache.swift in Sources */,
 				462CCC5D2C5522AD009855A1 /* ClientImageViewController.swift in Sources */,
 				464552C42C55029800DB1230 /* ClientNamesTableViewCell.swift in Sources */,
 				FAB8877629D222CF00A30D2E /* LocationDataManager.swift in Sources */,
 				FAB8873929CFB8C000A30D2E /* SceneDelegate.swift in Sources */,
 				FA606C2629D2751700456A85 /* ClientTableViewCell.swift in Sources */,
-				FA606C2329D2619200456A85 /* Model.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

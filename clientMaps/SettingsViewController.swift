@@ -29,7 +29,7 @@ class SettingsViewController: UIViewController {
         if let text = passwordText.text{
             UserDefaults.standard.setValue(text, forKey: "PASSWORD")
         }
-        return alert(Message: "ΟΚ!", self: self)
+        return Helper.shared.alert(Title:"Προσοχή!",Message: "ΟΚ!", self: self)
     }
 
 

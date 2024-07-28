@@ -6,16 +6,20 @@
 //
 
 import UIKit
-import Network
 import ContactsUI
-class MainViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate{
+import Network
+class MainViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, MainViewControllerDelegate {
     
     let refreshControl = UIRefreshControl()
-    var results = [TaskEntry]()
-    @IBOutlet weak var table: UITableView!
-    var searchResults = [TaskEntry]()
+    let networkManager = NetworkManager()
+    var results = [Client]()
+    var searchResults = [Client]()
     var searching = false
-    var selectedClient: TaskEntry?
+    var selectedClient: Client?
+    var connectionMode:  Bool = false
+    @IBOutlet weak var clientCount: UILabel!
+    @IBOutlet weak var table: UITableView!
+    @IBOutlet weak var connectionIndicator: UIImageView!
     @IBOutlet weak var SearchBar: UISearchBar!
     
     @IBAction func Donezo(_ sender: Any) {
@@ -23,41 +27,43 @@ class MainViewController: UIViewController, UITableViewDataSource, UITableViewDe
     }
     
     override func viewDidLoad() {
+        super.viewDidLoad()
+        UIStuff()
+        loadData()
+        let monitor = NWPathMonitor()
+        //Cache.shared.deleteClientQueue(completion: {_,_ in })
+        monitor.pathUpdateHandler = {
+            path in
+            self.setConnectionMode(ConnectionMode: path.status == .satisfied)
+            if path.status == .satisfied {
+                Cache.shared.retrieveClientQueue(){
+                    Clients in
+                    if Clients?.count == 0 || Clients == nil { return }
+                    for client in Clients! {
+                        if (client != nil){
+                            Requests.shared.addClient(client: client){success,errorMessage in
+                                if success || errorMessage == "Αυτός ο πελάτης υπάρχει ήδη!" {
+                                    print(client)
+                                    Cache.shared.removeClientFromQueue(clientID: client.id!)
+                                }
+                                print("RESULT: \(success) \(errorMessage)")
+                            }
+                        }
+                    }
+                }
+            }
+            
+        }
+        let queue = DispatchQueue(label: "Monitor")
+        monitor.start(queue: queue)
+    }
+    @objc func refresh(_ sender: AnyObject) {
+        loadData()
+    }
+    func UIStuff(){
         SearchBar.placeholder = "Αναζήτηση"
         SearchBar.enablesReturnKeyAutomatically = false
         navigationItem.titleView = SearchBar
-        
-        let monitor = NWPathMonitor()
-        monitor.pathUpdateHandler = { path in
-            if (path.status == .satisfied){
-                self.loadData()
-                DispatchQueue.main.async {
-                    if (!self.refreshControl.isDescendant(of: self.table)){
-                        self.table.addSubview(self.refreshControl)
-                    }
-                }
-                
-            }
-            else {
-                DispatchQueue.main.async {
-                    if (self.refreshControl.isDescendant(of: self.table)){
-                        self.refreshControl.removeFromSuperview()
-                    }
-                }
-                let folder = try! FileManager.default
-                    .url(for: .cachesDirectory, in: .userDomainMask, appropriateFor: nil, create: true)
-                try? FileManager.default.createDirectory(at: folder, withIntermediateDirectories: true)
-                let fileURL = folder.appendingPathComponent("data.json")
-                let data = try? String(contentsOf: fileURL)
-                if (data != nil){
-                    let response = try? JSONDecoder().decode([TaskEntry].self, from: (data?.data(using: .utf8))!)
-                    self.appendData(data: response!)
-                    
-                }
-                
-            }
-        }
-        monitor.start(queue: DispatchQueue(label: "Monitor"))
         refreshControl.attributedTitle = NSAttributedString(string: "Τραβήξτε για ανανέωση")
         refreshControl.addTarget(self, action: #selector(self.refresh(_:)), for: .valueChanged)
         table.delegate = self
@@ -66,57 +72,57 @@ class MainViewController: UIViewController, UITableViewDataSource, UITableViewDe
         table.register(ClientTableViewCell.nib(), forCellReuseIdentifier: ClientTableViewCell.identifier)
         SearchBar.delegate = self
         table.addSubview(refreshControl)
-        super.viewDidLoad()
         SearchBar.delegate = self
         table.register(ClientTableViewCell.nib(), forCellReuseIdentifier: ClientTableViewCell.identifier)
         let longPressRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(handleLongPress(_:)))
         table.addGestureRecognizer(longPressRecognizer)
     }
-    @objc func refresh(_ sender: AnyObject) {
-        loadData()
+    func loadData(){
+        Requests.shared.loadAllClients(){
+            success,clients,mode in
+            if (success){
+                self.appendData(data: clients!)
+            } else {
+                Helper.shared.alert(Title: "Προσοχή", Message: "Κάτι πήγε στραβά", self: self)
+            }
+            DispatchQueue.main.async{
+                self.connectionIndicator.image =  UIImage(systemName: success ? "wifi" : "wifi.slash")
+            }
+        }
     }
+    
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if (searching) { return searchResults.count }
         return results.count
     }
-    func cacheData(JSON: Data){
-        let folder = try! FileManager.default
-            .url(for: .cachesDirectory, in: .userDomainMask, appropriateFor: nil, create: true)
-        try? FileManager.default.createDirectory(at: folder, withIntermediateDirectories: true)
-        let fileURL = folder.appendingPathComponent("data.json")
-        try? JSON.write(to: fileURL)
-    }
-    func loadData(){
-        let url = URL(string: Helper.shared.DATA_ENDPOINT + Helper.shared.PASSWORD!)
-        guard let requestUrl = url else { fatalError() }
-        var request = URLRequest(url: requestUrl)
-        request.httpMethod = "POST"
-        let task = URLSession.shared.dataTask(with: request) { (data, response, error) in
-            if (error != nil){
-                DispatchQueue.main.async {
-                    alert(Message: "Δέν υπάρχει σύνδεση στο διαδίκτυο!", self: self)
-                    self.refreshControl.endRefreshing()
-                }
-                return
-            }
-            if let data = data {
-                self.cacheData(JSON: data)
-                print(data)
-                if let response = try? JSONDecoder().decode([TaskEntry].self, from: data) {
-                    self.appendData(data: response)
-                }
-            }
+    func setConnectionMode(ConnectionMode: Bool){
+        connectionMode = ConnectionMode
+        DispatchQueue.main.async{
+            self.connectionIndicator.image =  UIImage(systemName: ConnectionMode ? "wifi" : "wifi.slash")
         }
-        task.resume()
+        if (ConnectionMode){
+            DispatchQueue.main.async{
+                if (!self.refreshControl.isDescendant(of: self.table)){
+                    self.table.addSubview(self.refreshControl)
+                }
+                self.loadData()
+            }
+
+        } else {
+            
+        }
     }
-    func appendData(data: [TaskEntry]){
+
+
+    func appendData(data: [Client]){
         DispatchQueue.main.async {
             self.results = data
             self.results.sort {
                 $0.name < $1.name
             }
             self.table.reloadData()
+            self.clientCount.text = "Συνολικοί Πελάτες: \(self.results.count)"
             self.refreshControl.endRefreshing()
         }
     }
@@ -124,30 +130,28 @@ class MainViewController: UIViewController, UITableViewDataSource, UITableViewDe
         SearchBar.endEditing(true)
     }
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let selectedClient : TaskEntry
+        let selectedClient : Client
         let cell =
         table.dequeueReusableCell(withIdentifier: ClientTableViewCell.identifier, for: indexPath)
         as! ClientTableViewCell
-        if (searching){
-            selectedClient = searchResults[indexPath.row]
-        } else {
-            selectedClient = results[indexPath.row]
-        }
+        selectedClient = searching ? searchResults[indexPath.row] : results[indexPath.row]
         cell.ClientName.text = selectedClient.name
         cell.placeText.text = selectedClient.place
-        cell.hasImage.isHidden = !selectedClient.has_image
+        cell.hasImage.isHidden = !selectedClient.has_image!
         
         if (selectedClient.phone.isEmpty){
             cell.callButton.isEnabled = false
             cell.saveContact.isEnabled = false
         } else {
+            
             cell.callButton.isEnabled = true
             cell.callButton.tag = indexPath.row
+            cell.callButton.addTarget(self, action: #selector(callButtonTapped(_:)), for: .touchUpInside)
+            
             cell.saveContact.isEnabled = true
             cell.saveContact.tag = indexPath.row
-            cell.callButton.tag = indexPath.row
-            cell.callButton.addTarget(self, action: #selector(callButtonTapped(_:)), for: .touchUpInside)
             cell.saveContact.addTarget(self, action: #selector(saveButtonTapped(_:)), for: .touchUpInside)
+
         }
         cell.contactPickButton.tag = indexPath.row
         cell.contactPickButton.isEnabled = true
@@ -165,6 +169,10 @@ class MainViewController: UIViewController, UITableViewDataSource, UITableViewDe
     private func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
         return true
     }
+    private func noInternetIndication(){
+        applyWiggleAnimation(to: connectionIndicator)
+        Helper.shared.triggerImpactFeedback(style: .heavy)
+    }
     @objc func contactButtonTapped(_ sender: UIButton) {
         let contactPicker = CNContactPickerViewController()
         contactPicker.delegate = self
@@ -172,12 +180,16 @@ class MainViewController: UIViewController, UITableViewDataSource, UITableViewDe
         self.present(contactPicker, animated: true, completion: nil)
     }
     @objc func handleLongPress(_ gestureRecognizer: UILongPressGestureRecognizer) {
+        if !connectionMode {
+            noInternetIndication()
+            return
+        }
         if gestureRecognizer.state == .began {
             let location = gestureRecognizer.location(in: self.table)
             if let indexPath = self.table.indexPathForRow(at: location) {
                 let selectedClient = searching ? searchResults[indexPath.row] : results[indexPath.row]
                 Helper.shared.triggerImpactFeedback(style: .medium)
-                if (!selectedClient.has_image){
+                if (!selectedClient.has_image!){
                     if let cell = table.cellForRow(at: indexPath) as? ClientTableViewCell,
                        let imageView = cell.hasImage {
                         cell.hasImage.isHidden = false
@@ -185,12 +197,11 @@ class MainViewController: UIViewController, UITableViewDataSource, UITableViewDe
                     }
                     return
                 }
-                let cell = self.table.cellForRow(at: indexPath)
                 let storyboard = UIStoryboard(name: "Main", bundle: nil)
                 if let clientImageVC = storyboard.instantiateViewController(withIdentifier: "ClientImageViewController") as? ClientImageViewController {
-                    Helper.shared.downloadImage(clientID: self.searching ? searchResults[indexPath.row].id : results[indexPath.row].id) { image, error in
-                        if let error = error {
-                            print("Failed to download image: \(error.localizedDescription)")
+                    Requests.shared.downloadImage(clientID: (self.searching ? searchResults[indexPath.row].id : results[indexPath.row].id)!) { image, errorMessage in
+                        if let error = errorMessage {
+                            Helper.shared.alert(Title: "Προσοχή!", Message: error, self: self)
                             return
                         }
                         
@@ -211,59 +222,34 @@ class MainViewController: UIViewController, UITableViewDataSource, UITableViewDe
     
     func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
         let deleteAction = UIContextualAction(style: .destructive, title: "Διαγραφή") { (_, _, completionHandler) in
-            var client : TaskEntry
-            if self.searching {
-                client = self.searchResults[indexPath.row]
-            }
-            else {
-                client = self.results[indexPath.row]
-            }
-            let url = URL(string: Helper.shared.DELETE_ENDPOINT + client.id + "/" + Helper.shared.PASSWORD!)
-            guard let requestUrl = url else { fatalError() }
-            var request = URLRequest(url: requestUrl)
-            request.httpMethod = "POST"
-            let task = URLSession.shared.dataTask(with: request) { (data, response, error) in
-                if let error = error {
-                    print("Error took place \(error)")
-                    return
-                }
-                if let httpResponse = response as? HTTPURLResponse {
-                    if (httpResponse.statusCode == 200){
-                        self.searchResults = self.searchResults.filter { item in return item.id != client.id }
-                        self.results = self.results.filter { item in return item.id != client.id }
-                        DispatchQueue.main.async{
-                            self.table.setEditing(false, animated: true)
-                            self.table.reloadData()
-                        }
-                    }
-                    else {
-                        DispatchQueue.main.async {
-                            alert(Message: "Κάτι πήγε στραβά", self: self)
-                        }
+            var client : Client
+            client = self.searching ? self.searchResults[indexPath.row] : self.results[indexPath.row]
+            Requests.shared.deleteClient(client: client){
+                success,errorMessage in
+                if (success){
+                    self.searchResults = self.searchResults.filter { item in return item.id != client.id }
+                    self.results = self.results.filter { item in return item.id != client.id }
+                    DispatchQueue.main.async{
+                        self.table.setEditing(false, animated: true)
+                        self.table.reloadData()
                     }
                 }
+                else {
+                    Helper.shared.alert(Title: "Προσοχή!", Message: errorMessage ?? "Κάτι πήγε στραβά!", self: self)
+                }
+                
             }
-            self.table.reloadData()
-            task.resume()
-            completionHandler(true)
         }
         let editAction = UIContextualAction(style: .normal, title: "Επεξεργασία") { (_, _, completionHandler) in
-            var client : TaskEntry
-            if self.searching {
-                client = self.searchResults[indexPath.row]
-            }
-            else {
-                client = self.results[indexPath.row]
-            }
+            let client = self.searching ? self.searchResults[indexPath.row] : self.results[indexPath.row]
             let storyBoard : UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
             let editController = storyBoard.instantiateViewController(withIdentifier: "EditController") as! EditController
-            editController.Client = client
+            editController.client = client
             self.present(editController, animated:true, completion:nil)
             self.table.setEditing(false, animated: true)
             
         }
         let takePhotoAction = UIContextualAction(style: .normal, title: "Λήψη Φωτογραφίας") { (_, _, completionHandler) in
-            var client = self.searching ? self.searchResults[indexPath.row] : self.results[indexPath.row]
             let imagePickerController = UIImagePickerController()
             imagePickerController.delegate = self
             imagePickerController.sourceType = .camera
@@ -295,14 +281,14 @@ class MainViewController: UIViewController, UITableViewDataSource, UITableViewDe
     }
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
         if let originalImage = info[.originalImage] as? UIImage {
-            Helper.shared.uploadImage(image: originalImage, clientID: self.selectedClient?.id) { success, errorMessage in
+            Requests.shared.uploadImage(image: originalImage, clientID: self.selectedClient?.id) { success, errorMessage in
                 if success {
                     DispatchQueue.main.async{
                         self.loadData()
                     }
                     
                 } else {
-                    print("Upload failed: \(errorMessage ?? "Unknown error")")
+                    Helper.shared.alert(Title: "Προσοχή!", Message: errorMessage ?? "Κάτι πήγε στραβά", self: self)
                 }
             }
         }
@@ -373,16 +359,23 @@ extension MainViewController : CNContactPickerDelegate{
               let longitude = selectedClient?.longitude,
               let latitude = selectedClient?.latitude,
               let names = selectedClient?.names,
+              let place = selectedClient?.place,
+              let has_image = selectedClient?.has_image,
               let id = selectedClient?.id else {
             return
         }
-        let Client = Helper.ClientData(name: name, phone: contactNumber, comments: comments, longitude: longitude, latitude: latitude, names: names, id: id)
-        Helper.shared.updateData(data: Client, viewController: self) { success in
+        let Client = Client(name: name, phone: contactNumber, comments: comments, longitude: longitude, latitude: latitude, names: names,place:place, has_image: has_image, id: id)
+        Requests.shared.editClient(data: Client, viewController: self) { success,errorMessage in
             if success {
                 self.loadData()
+            } else {
+                Helper.shared.alert(Title: "Προσοχή!", Message: errorMessage ?? "Κάτι πηγε στραβά!", self: self)
             }
         }
 
     }
 
+}
+protocol MainViewControllerDelegate: AnyObject {
+    func loadData()
 }
