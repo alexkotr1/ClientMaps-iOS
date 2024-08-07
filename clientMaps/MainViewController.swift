@@ -108,9 +108,6 @@ class MainViewController: UIViewController, UITableViewDataSource, UITableViewDe
                 }
                 self.loadData()
             }
-
-        } else {
-            
         }
     }
 
@@ -142,7 +139,8 @@ class MainViewController: UIViewController, UITableViewDataSource, UITableViewDe
         if (selectedClient.phone.isEmpty){
             cell.callButton.isEnabled = false
             cell.saveContact.isEnabled = false
-        } else {
+        }
+        else {
             
             cell.callButton.isEnabled = true
             cell.callButton.tag = indexPath.row
@@ -157,6 +155,10 @@ class MainViewController: UIViewController, UITableViewDataSource, UITableViewDe
         cell.contactPickButton.isEnabled = true
         cell.contactPickButton.addTarget(self, action: #selector(contactButtonTapped), for: .touchUpInside)
         
+        if !connectionMode{
+           cell.saveContact.isEnabled = false
+           cell.contactPickButton.isEnabled = false
+       }
         
         return cell
     }
@@ -221,7 +223,12 @@ class MainViewController: UIViewController, UITableViewDataSource, UITableViewDe
     }
     
     func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+        self.table.setEditing(false, animated: true)
         let deleteAction = UIContextualAction(style: .destructive, title: "Διαγραφή") { (_, _, completionHandler) in
+            if (!self.connectionMode){
+                self.noInternetIndication()
+                return
+            }
             var client : Client
             client = self.searching ? self.searchResults[indexPath.row] : self.results[indexPath.row]
             Requests.shared.deleteClient(client: client){
@@ -241,21 +248,29 @@ class MainViewController: UIViewController, UITableViewDataSource, UITableViewDe
             }
         }
         let editAction = UIContextualAction(style: .normal, title: "Επεξεργασία") { (_, _, completionHandler) in
+            self.table.setEditing(false, animated: true)
+            if (!self.connectionMode) {
+                self.noInternetIndication()
+                return;
+            }
             let client = self.searching ? self.searchResults[indexPath.row] : self.results[indexPath.row]
             let storyBoard : UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
             let editController = storyBoard.instantiateViewController(withIdentifier: "EditController") as! EditController
             editController.client = client
             self.present(editController, animated:true, completion:nil)
-            self.table.setEditing(false, animated: true)
             
         }
         let takePhotoAction = UIContextualAction(style: .normal, title: "Λήψη Φωτογραφίας") { (_, _, completionHandler) in
+            self.table.setEditing(false, animated: true)
+            if (!self.connectionMode) {
+                self.noInternetIndication()
+                return;
+            }
             let imagePickerController = UIImagePickerController()
             imagePickerController.delegate = self
             imagePickerController.sourceType = .camera
             imagePickerController.allowsEditing = false
             self.present(imagePickerController, animated: true, completion: nil)
-            self.table.setEditing(false, animated: true)
             self.selectedClient = self.searching ? self.searchResults[indexPath.row] : self.results[indexPath.row]
             
         }
